@@ -1,8 +1,8 @@
 import asyncio
 import liteconfig
 import logging
-import os
-import incoming
+
+import smtp_handler
 
 
 class Singleton(type):
@@ -20,13 +20,16 @@ config = liteconfig.Config('afsmtpd-my.ini')
 
 if __name__ == '__main__':
     # TODO: make it running as windows service
-    os.remove('afsmtpd.log')
+
+    # import os
+    # os.remove('afsmtpd.log')
+
     logging.basicConfig(filename='afsmtpd.log',
                         format='%(asctime)s | %(funcName)s, %(lineno)d: %(message)s',
                         datefmt='%m/%b/%Y %H:%M:%S')
     logging.getLogger().setLevel(config.main.loglevel)
     loop = asyncio.get_event_loop()
-    loop.create_task(incoming.smtp_server(config.server.ip, config.server.port))
+    loop.create_task(smtp_handler.smtp_server(config.server.ip, config.server.port))
     try:
         loop.run_forever()
     except KeyboardInterrupt:

@@ -5,7 +5,7 @@ import email
 import logging
 
 
-class Mutator():
+class Mutator:
     """Class to work with email messages"""
     def __init__(self, content):
         self.content = email.message_from_bytes(content)

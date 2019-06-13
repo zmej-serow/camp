@@ -1,6 +1,6 @@
-import outgoing
-import messaging
-import filesystems
+import mail_sender
+import email_management
+import file_uploader
 
 from aiosmtpd.controller import Controller
 from aiosmtpd.smtp import SMTP
@@ -26,9 +26,9 @@ class AttachHarvester:
         :return: SMTP status string
         """
         logging.info('Incoming message. Handling data')
-        message = messaging.Mutator(envelope.content)
+        message = email_management.Mutator(envelope.content)
 
-        destination = filesystems.Uploader(config.upload.service, config.upload.creds, config.upload.path)
+        destination = file_uploader.Uploader(config.upload.service, config.upload.creds, config.upload.path)
         if not destination.service:
             logging.error(f'Cannot authorize to "{config.upload.service}"')
             return '554 Authorization failed for filesharing service'
@@ -46,7 +46,7 @@ class AttachHarvester:
             else:
                 return '554 Cannot save attachment(s) to process'
 
-        sendmail = outgoing.Sender(config.mail)
+        sendmail = mail_sender.Sender(config.mail)
         error = sendmail.service(message.content)
         return error or '250 Message accepted for delivery'
 
