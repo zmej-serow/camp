@@ -41,5 +41,6 @@ class Sender(metaclass=Singleton):
             server.send_message(message)
         except Exception as e:
             return e
+
         server.quit()
         return None
