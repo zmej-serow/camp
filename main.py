@@ -15,16 +15,16 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-config = liteconfig.Config('afsmtpd-my.ini')
+config = liteconfig.Config('camp-my.ini')
 # TODO: check config sanity.
 
 if __name__ == '__main__':
     # TODO: make it running as windows service
 
     # import os
-    # os.remove('afsmtpd.log')
+    # os.remove('camp.log')
 
-    logging.basicConfig(filename='afsmtpd.log',
+    logging.basicConfig(filename='camp.log',
                         format='%(asctime)s | %(funcName)s, %(lineno)d: %(message)s',
                         datefmt='%m/%b/%Y %H:%M:%S')
     logging.getLogger().setLevel(config.main.loglevel)
