@@ -1,3 +1,4 @@
+from email.header import decode_header
 from email.mime.text import MIMEText
 from main import config
 
@@ -49,8 +50,13 @@ class Mutator:
         payloads = self.content.get_payload()
         for part in payloads:
             filename = part.get_filename()
-
             if filename:
+                decoded_header = decode_header(filename)
+                encoding = decoded_header[0][1]
+                if encoding is not None:
+                    logging.info('Have to decode filename:', filename)
+                    filename = decoded_header[0][0].decode(encoding)
+
                 logging.info(f'File {filename} found')
                 attachment = part.get_payload(decode=True)
 

@@ -35,6 +35,9 @@ class AttachHarvester:
 
         with open_fs('mem://') as ramdisk:
             attachments = message.extract_attachments(ramdisk)
+
+            return '554 Cannot save attachment(s) to process'
+
             if attachments:
                 if not destination.upload(attachments, ramdisk):
                     logging.error('Cannot upload files')
